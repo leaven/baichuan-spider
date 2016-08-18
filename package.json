@@ -1,0 +1,24 @@
+{
+  "name": "baichuan-spider",
+  "version": "1.0.0",
+  "description": "百川spider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leaven/baichuan-spider.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leaven/baichuan-spider/issues"
+  },
+  "homepage": "https://github.com/leaven/baichuan-spider#readme",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "mysql": "^2.11.1",
+    "request": "^2.69.0"
+  }
+}
