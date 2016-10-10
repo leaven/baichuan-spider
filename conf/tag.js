@@ -2,7 +2,7 @@ module.exports = [
 	{
 		sort: 'Web前端',
 		tag: 'js',
-		regs: ['react',  'javascript', 'js', 'anguluar', 'backbone','node']
+		regs: ['react',  'javascript', 'js', 'anguluar', 'backbone','node', 'ECMAScript6', 'es6']
 	},
 	{
 		sort: 'Web前端',

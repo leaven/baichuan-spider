@@ -4,6 +4,7 @@
   "description": "百川spider",
   "main": "index.js",
   "scripts": {
+    "start": "node ./crawl/crawl.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/leaven/baichuan-spider#readme",
   "dependencies": {
     "cheerio": "^0.20.0",
+    "lodash": "^4.15.0",
     "mysql": "^2.11.1",
     "request": "^2.69.0"
   }

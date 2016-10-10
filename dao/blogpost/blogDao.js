@@ -64,16 +64,14 @@ module.exports = {
 						content: result
 					};    
 				}
- 
+ 				// 释放连接 
+				connection.release();
 				// 以json形式，把操作结果返回给前台页面
 				if(req.query.json) {
 					jsonWrite(res, result,err);
 				}else {
 					callback && callback(result);
 				}
- 
-				// 释放连接 
-				connection.release();
 			})
 		});
 	},
@@ -83,8 +81,9 @@ module.exports = {
 				if(err) {  
 					throw err;
 				}
-				callback(null, result)
 				connection.release();
+				callback(null, result)
+				
 			})
 		})
 	}
