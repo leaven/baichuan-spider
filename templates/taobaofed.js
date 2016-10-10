@@ -33,33 +33,38 @@ module.exports = {
 	parseHTML: function(body) {
 		var $ = cheerio.load(body),
 			breakFlag = false;
-		$('.article').each(function(i, item) {
-			var url = 'http://taobaofed.org'+$(this).find('.thumbnail').attr('href');
-			if(!breakFlag) {
-				blogDao.selectByUrl(url, function(err, res) {
-					if(err) {
-						throw err;
-					}else if(!err && res.length == 0) {
-						var	title = $(this).find('.title').text();
-						//分类别
-						var sort = metaSort(title);
-						var contents = {
-							url: url,
-							title: title,
-							brief: $(this).find('.article-excerpt').text().replace(/[\r\n\t]/g, '').replace(/<([a-zA-Z]+)>.*<\/[a-zA-Z]+>/g, ''),
-							post_date: $(this).find('.date time').text(),
-							site: 'taobaofed',
-							tag: sort.tag.join(','),
-							meta: sort.meta.join(',')
-						};
-						blogDao.add(contents);
-					}else {
-						console.log('already exist!');
-						breakFlag = true;
-					}
-				}.bind(this));
-			}
-		});
+		try{
+			$('.article').each(function(i, item) {
+				var url = 'http://taobaofed.org'+$(this).find('.thumbnail').attr('href');
+				if(!breakFlag) {
+					blogDao.selectByUrl(url, function(err, res) {
+						if(err) {
+							throw err;
+						}else if(!err && res.length == 0) {
+							var	title = $(this).find('.title').text();
+							//分类别
+							var sort = metaSort(title);
+							var contents = {
+								url: url,
+								title: title,
+								brief: $(this).find('.article-excerpt').text().replace(/[\r\n\t]/g, '').replace(/<([a-zA-Z]+)>.*<\/[a-zA-Z]+>/g, ''),
+								post_date: $(this).find('.date time').text(),
+								site: 'taobaofed',
+								tag: sort.tag.join(','),
+								meta: sort.meta.join(',')
+							};
+							blogDao.add(contents);
+						}else {
+							console.log('already exist!');
+							breakFlag = true;
+						}
+					}.bind(this));
+				}
+		
+			});
+		}catch(e) {
+			console.log(e);
+		}
 		console.log('成功插入'+$('.articlemenu').length+"条数据");
 	}
 }

@@ -28,33 +28,37 @@ module.exports = {
 		var $ = cheerio.load(body),
 			breakFlag = false;
 		//提取信息
-		$('.articlemenu').each(function(i, item) {
-			var $blogPost = $(this).find('.blogTitle'),
-				title = $blogPost.text(),
-				url = $blogPost.attr('href');
-				
-			if(!breakFlag) {
-				blogDao.selectByUrl(url, function(err, res) {
-					if(!err && res.length == 0) {
-						//分类别
-						var sort = metaSort(title);
-						var contents = {
-							url: url,
-							title: title,
-							brief: $(this).find('.text').text().replace(/[\r\n\t]/g, '').replace(/<([a-zA-Z]+)>.*<\/[a-zA-Z]+>/g, ''),
-							post_date: $(this).find('.blogPs').text().replace(/.*\b(\d+)年(\d+)月(\d+)日.*/,'$1-$2-$3'),
-							site: 'alloyteam',
-							tag: sort.tag.join(','),
-							meta: sort.meta.join(',')
+		try{
+			$('.articlemenu').each(function(i, item) {
+				var $blogPost = $(this).find('.blogTitle'),
+					title = $blogPost.text(),
+					url = $blogPost.attr('href');
+					
+				if(!breakFlag) {
+					blogDao.selectByUrl(url, function(err, res) {
+						if(!err && res.length == 0) {
+							//分类别
+							var sort = metaSort(title);
+							var contents = {
+								url: url,
+								title: title,
+								brief: $(this).find('.text').text().replace(/[\r\n\t]/g, '').replace(/<([a-zA-Z]+)>.*<\/[a-zA-Z]+>/g, ''),
+								post_date: $(this).find('.blogPs').text().replace(/.*\b(\d+)年(\d+)月(\d+)日.*/,'$1-$2-$3'),
+								site: 'alloyteam',
+								tag: sort.tag.join(','),
+								meta: sort.meta.join(',')
+							}
+							blogDao.add(contents);
+						}else {
+							console.log('already exist!');
+							breakFlag = true;
 						}
-						blogDao.add(contents);
-					}else {
-						console.log('already exist!');
-						breakFlag = true;
-					}
-				}.bind(this));
-			}
-		});
+					}.bind(this));
+				}
+			});
+		}catch(e) {
+			console.log(e);
+		}
 		console.log('成功插入'+$('.articlemenu').length+"条数据");
 	}
 }
